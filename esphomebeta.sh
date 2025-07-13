@@ -34,10 +34,10 @@ function update_script() {
 
   VENV_PATH="/opt/esphome/.venv"
   ESPHOME_BIN="${VENV_PATH}/bin/esphome"
-  export PYTHON_VERSION="3.12"
+  export PYTHON_VERSION="3.13"
 
   if [[ ! -d "$VENV_PATH" || ! -x "$ESPHOME_BIN" ]]; then
-    PYTHON_VERSION="3.12" setup_uv
+    PYTHON_VERSION="3.13" setup_uv
     msg_info "Migrating to uv/venv"
     rm -rf "$VENV_PATH"
     mkdir -p /opt/esphome
@@ -45,12 +45,12 @@ function update_script() {
     $STD uv venv "$VENV_PATH"
     $STD "$VENV_PATH/bin/python" -m ensurepip --upgrade
     $STD "$VENV_PATH/bin/python" -m pip install --upgrade pip
-    $STD "$VENV_PATH/bin/python" -m pip install esphome tornado esptool
+    $STD "$VENV_PATH/bin/python" -m pip install --pre esphome tornado esptool
     msg_ok "Migrated to uv/venv"
   else
     msg_info "Updating ESPHome"
-    PYTHON_VERSION="3.12" setup_uv
-    $STD "$VENV_PATH/bin/python" -m pip install --upgrade esphome tornado esptool
+    PYTHON_VERSION="3.13" setup_uv
+    $STD "$VENV_PATH/bin/python" -m pip install --upgrade --pre esphome tornado esptool
     msg_ok "Updated ESPHome"
   fi
   SERVICE_FILE="/etc/systemd/system/esphomeDashboard.service"
